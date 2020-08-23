@@ -14,44 +14,32 @@
 
 package com.dhms.tvshow;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 /*
  * Main Activity class that loads {@link MainFragment}.
  */
-public class MainActivity extends Activity {
-    private static final String DHMS = "https://play.grafana.org/d/000000012/grafana-play-home?orgId=1";
+public class MainActivity extends FragmentActivity {
+    private final static String BAIDU = "https://console.bce.baidu.com/bcd/#/bcd/manage/detail~domain=duanju91.top&resourceId=5a512559-124d-49f6-9aa3-2415adbd7677";
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        WebView webView = findViewById(R.id.web_view);
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(false);
-        webView.getSettings().setUseWideViewPort(false);
-        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setBlockNetworkImage(false);
-
-        int _nWebScale = 100;
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int nScreenHeight = displaymetrics.heightPixels;
-        _nWebScale = (int) Math.round((nScreenHeight / 540.0) * 50.0);
-        webView.setVisibility(View.INVISIBLE);
-        webView.setInitialScale(_nWebScale);
-        webView.setVisibility(View.VISIBLE);
-
-        webView.loadUrl(DHMS);
+        String lastAccessUrl = BrowserFragment.getLastAccessUrl(this);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (TextUtils.isEmpty(lastAccessUrl)) {
+            fragmentManager.beginTransaction().replace(R.id.main_fragment
+                    , BrowserFragment.newInstance(BAIDU)).commit();
+        } else {
+            Log.d("LastAccessUrl", lastAccessUrl);
+            fragmentManager.beginTransaction().replace(R.id.main_fragment
+                    , BrowserFragment.newInstance(lastAccessUrl)).commit();
+        }
     }
 }

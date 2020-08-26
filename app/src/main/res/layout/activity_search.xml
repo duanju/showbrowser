@@ -20,14 +20,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:lines="1"
         android:hint="@string/search_hit"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintVertical_bias="0.30"
+        android:nextFocusDown="@id/search_search_history_one" />
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="@id/search_search_box"
+        app:layout_constraintEnd_toEndOf="@id/search_search_box"
         app:layout_constraintTop_toBottomOf="@id/search_search_box"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/lb_tv_white"
-        android:visibility="invisible"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/search_search_history_one"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="sdf" />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="sdf" />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="sdf" />
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>

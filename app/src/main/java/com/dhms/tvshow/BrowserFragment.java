@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -59,15 +60,15 @@ public class BrowserFragment extends Fragment {
         webView.setVisibility(View.INVISIBLE);
         webView.setInitialScale(webScale);
         webView.setVisibility(View.VISIBLE);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("LastAccessUrl", "shouldOverrideUrlLoading: " + url);
-                updateLastAccessUrl(mActivity, url);
-
-                return false; //Allow WebView to load url
-            }
-        });
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                Log.d("LastAccessUrl", "shouldOverrideUrlLoading: " + url);
+//                updateLastAccessUrl(mActivity, url);
+//
+//                return false; //Allow WebView to load url
+//            }
+//        });
 
         webView.loadUrl(sUrl);
 
@@ -76,14 +77,8 @@ public class BrowserFragment extends Fragment {
 
     private static void updateLastAccessUrl(@Nullable Activity activity, String url) {
         if (null != activity) {
-            SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
-            preferences.edit().putString(BrowserFragment.KEY_OF_LAST_ACCESS_URL, url).apply();
+            History history = new History(url);
+            History.saveSync(activity, history);
         }
-    }
-
-    static String getLastAccessUrl(Activity activity) {
-        SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
-
-        return preferences.getString(BrowserFragment.KEY_OF_LAST_ACCESS_URL, null);
     }
 }

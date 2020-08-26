@@ -14,6 +14,7 @@
 
 package com.dhms.tvshow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,14 +33,14 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String lastAccessUrl = BrowserFragment.getLastAccessUrl(this);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (TextUtils.isEmpty(lastAccessUrl)) {
-            fragmentManager.beginTransaction().replace(R.id.main_fragment
-                    , BrowserFragment.newInstance(BAIDU)).commit();
+//        if (TextUtils.isEmpty(lastAccessUrl)) {
+        if (true) {
+            Intent startBrowser = new Intent(this, SearchActivity.class);
+            startActivity(startBrowser);
         } else {
-            Log.d("LastAccessUrl", lastAccessUrl);
-            fragmentManager.beginTransaction().replace(R.id.main_fragment
-                    , BrowserFragment.newInstance(lastAccessUrl)).commit();
+            Intent startBrowser = new Intent(this, BrowserActivity.class);
+            startBrowser.putExtra(BrowserActivity.URL, BAIDU);
+            startActivity(startBrowser);
         }
     }
 }

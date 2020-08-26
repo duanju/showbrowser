@@ -32,17 +32,20 @@
         app:layout_constraintTop_toBottomOf="@id/search_search_box">
 
         <Button
+            android:background="@drawable/history_button"
             android:id="@+id/search_search_history_one"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:text="sdf" />
 
         <Button
+            android:background="@drawable/history_button"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:text="sdf" />
 
         <Button
+            android:background="@drawable/history_button"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:text="sdf" />

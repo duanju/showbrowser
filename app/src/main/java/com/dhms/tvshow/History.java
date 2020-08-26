@@ -42,6 +42,23 @@ public class History {
         this.url = url;
     }
 
+    public static void getAllSync(final Context context, final Handler handler, final int what) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ShareBrowserDatabase database = ShareBrowserDatabase.createDB(context);
+                List<History> all = database.userDao().loadAll();
+                Message message = handler.obtainMessage();
+                message.what = what;
+                message.obj = all;
+
+                handler.dispatchMessage(message);
+            }
+        });
+
+        thread.start();
+    }
+
     public static void getLastSync(final Context context, final Handler handler, final int what) {
         Thread thread = new Thread(new Runnable() {
             @Override

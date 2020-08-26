@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    tools:context="com.dhms.tvshow.SearchActivity">
+
+</Button>

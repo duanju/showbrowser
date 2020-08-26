@@ -16,39 +16,20 @@
         android:gravity="center_vertical"
         android:queryHint="@string/search_hit"
         android:searchHintIcon="@null"
-        android:nextFocusDown="@id/search_search_history_one"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.30" />
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_history_list"
         android:layout_width="0dp"
         android:layout_height="80dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/search_search_box"
         app:layout_constraintStart_toStartOf="@id/search_search_box"
-        app:layout_constraintTop_toBottomOf="@id/search_search_box">
-
-        <Button
-            android:background="@drawable/history_button"
-            android:id="@+id/search_search_history_one"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:text="sdf" />
-
-        <Button
-            android:background="@drawable/history_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:text="sdf" />
-
-        <Button
-            android:background="@drawable/history_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:text="sdf" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/search_search_box" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.dhms.tvshow;
 
 import android.text.TextUtils;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
@@ -18,6 +19,7 @@ public class BrowserActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
         String url = getIntent().getStringExtra(BrowserActivity.URL);
+        Log.d("LastAccessUrl", "onCreate get Url " + url);
         if (!TextUtils.isEmpty(url)) {
             View frameLayout = findViewById(R.id.browser_root);
             getSupportFragmentManager().beginTransaction().replace(R.id.browser_root

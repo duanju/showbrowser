@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.dhms.tvshow.History;
 
@@ -15,6 +16,8 @@ public interface HistoryDao {
     List<History> loadAll();
     @Insert
     void insert(History history);
+    @Update
+    void update(History history);
     @Delete
     void delete(History history);
 }

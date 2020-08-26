@@ -43,14 +43,15 @@ public class MainActivity extends FragmentActivity {
                 if (msg.what == MESSAGE_LASTER_HISTORY) {
                     History last = (History) msg.obj;
                     if (null == last || TextUtils.isEmpty(last.getUrl())) {
-//        if (true) {
                         Intent startBrowser = new Intent(MainActivity.this, SearchActivity.class);
                         startActivity(startBrowser);
                     } else {
                         Intent startBrowser = new Intent(MainActivity.this, BrowserActivity.class);
-                        startBrowser.putExtra(BrowserActivity.URL, BAIDU);
+                        startBrowser.putExtra(BrowserActivity.URL, last.getUrl());
                         startActivity(startBrowser);
                     }
+
+                    finish();
                 } else {
                     super.handleMessage(msg);
                 }

@@ -1,11 +1,13 @@
 package com.dhms.tvshow;
 
+import android.util.Log;
 import android.view.InputDevice;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-public class Dpad {final static int UP       = 0;
+public class Dpad {
+    final static int UP       = 0;
     final static int LEFT     = 1;
     final static int RIGHT    = 2;
     final static int DOWN     = 3;
@@ -14,15 +16,16 @@ public class Dpad {final static int UP       = 0;
     int directionPressed = -1; // initialized to -1
 
     public int getDirectionPressed(InputEvent event) {
-        if (!isDpadDevice(event)) {
-            return -1;
-        }
+//        if (!isDpadDevice(event)) {
+//            return -1;
+//        }
 
         // If the input event is a MotionEvent, check its hat axis values.
         if (event instanceof MotionEvent) {
 
             // Use the hat axis value to find the D-pad direction
             MotionEvent motionEvent = (MotionEvent) event;
+            Log.d("DPad", "getDirectionPressed MotionEvent ");
             float xaxis = motionEvent.getAxisValue(MotionEvent.AXIS_HAT_X);
             float yaxis = motionEvent.getAxisValue(MotionEvent.AXIS_HAT_Y);
 
@@ -44,9 +47,9 @@ public class Dpad {final static int UP       = 0;
 
         // If the input event is a KeyEvent, check its key code.
         else if (event instanceof KeyEvent) {
-
             // Use the key code to find the D-pad direction.
             KeyEvent keyEvent = (KeyEvent) event;
+            Log.d("DPad", "getDirectionPressed KeyEvent: " + keyEvent.getKeyCode());
             if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
                 directionPressed = Dpad.LEFT;
             } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
@@ -57,6 +60,8 @@ public class Dpad {final static int UP       = 0;
                 directionPressed = Dpad.DOWN;
             } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
                 directionPressed = Dpad.CENTER;
+            } else {
+                directionPressed = keyEvent.getKeyCode();
             }
         }
         return directionPressed;

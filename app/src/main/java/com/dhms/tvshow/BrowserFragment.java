@@ -32,24 +32,24 @@ public class BrowserFragment extends Fragment {
         return new BrowserFragment();
     }
 
-    private Activity mActivity;
+    private WebView mWebView;
+    private History mHistory;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mActivity = getActivity();
-        updateLastAccessUrl(mActivity, sUrl);
-
+        mHistory = new History(sUrl);
+        updateHistoryUrl(true);
         View rootView = inflater.inflate(R.layout.browser_fragment, container, false);
 
-        WebView webView = rootView.findViewById(R.id.web_view);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(false);
-        webView.getSettings().setUseWideViewPort(false);
-        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setBlockNetworkImage(false);
+        mWebView = rootView.findViewById(R.id.web_view);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setLoadWithOverviewMode(false);
+        mWebView.getSettings().setUseWideViewPort(false);
+        mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setBlockNetworkImage(false);
 
         int webScale = 100;
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -57,28 +57,32 @@ public class BrowserFragment extends Fragment {
                 .getMetrics(displaymetrics);
         int nScreenHeight = displaymetrics.heightPixels;
         webScale = (int) Math.round((nScreenHeight / 540.0) * 50.0);
-        webView.setVisibility(View.INVISIBLE);
-        webView.setInitialScale(webScale);
-        webView.setVisibility(View.VISIBLE);
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                Log.d("LastAccessUrl", "shouldOverrideUrlLoading: " + url);
-//                updateLastAccessUrl(mActivity, url);
-//
-//                return false; //Allow WebView to load url
-//            }
-//        });
+        mWebView.setVisibility(View.INVISIBLE);
+        mWebView.setInitialScale(webScale);
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("LastAccessUrl", "shouldOverrideUrlLoading: " + url);
+                mHistory.setUrl(url);
+                updateHistoryUrl(false);
+                return false; //Allow WebView to load url
+            }
+        });
 
-        webView.loadUrl(sUrl);
+        mWebView.loadUrl(sUrl);
 
         return rootView;
     }
 
-    private static void updateLastAccessUrl(@Nullable Activity activity, String url) {
-        if (null != activity) {
-            History history = new History(url);
-            History.saveSync(activity, history);
+    private void updateHistoryUrl(boolean add) {
+        if (null != getActivity()) {
+            Log.d("LastAccessUrl", "updateHistoryUrl: " + mHistory.getUrl());
+            if (add) {
+                History.saveSync(getActivity(), mHistory);
+            } else {
+                History.updateSync(getActivity(), mHistory);
+            }
         }
     }
 }

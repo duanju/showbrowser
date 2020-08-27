@@ -2,6 +2,7 @@ package com.dhms.tvshow;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -34,6 +35,9 @@ public class SearchActivity extends FragmentActivity {
         setContentView(R.layout.activity_search);
         mSearchView = findViewById(R.id.search_search_box);
         mHistoryListView = findViewById(R.id.search_history_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        mHistoryListView.setLayoutManager(layoutManager);
         mSearchView.setSubmitButtonEnabled(true);
 
         int goButtonId = mSearchView.getContext().getResources().getIdentifier("android:id/search_go_btn", null, null);
@@ -91,17 +95,23 @@ public class SearchActivity extends FragmentActivity {
     private class HistoryListAdapter extends RecyclerView.Adapter {
         private Context mContext;
         private List<History> mHistories;
+        RecyclerView.LayoutParams mLayoutParams;
 
         public HistoryListAdapter(Context context, List<History> histories) {
             super();
             this.mContext = context;
             this.mHistories = histories;
+            this.mLayoutParams = new RecyclerView.LayoutParams(
+                    (int) mContext.getResources().getDimension(R.dimen.history_item),
+                    (int) mContext.getResources().getDimension(R.dimen.history_item)
+            );
         }
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Button button = new Button(mContext);
+            button.setLayoutParams(mLayoutParams);
             button.setBackground(mContext.getDrawable(R.drawable.history_button));
 
             return new HistoryViewHolder(button);

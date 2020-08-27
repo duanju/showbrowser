@@ -22,21 +22,21 @@ limitations under the License.
     </item>
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <corners android:radius="8dp" />
+            <corners android:radius="16dp" />
             <solid android:color="#2ecccccc" />
             <stroke android:width="1dp" android:color="#ccffffff" />
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <corners android:radius="8dp" />
+            <corners android:radius="16dp" />
             <solid android:color="#2ecccccc" />
             <stroke android:width="1dp" android:color="#ccffffff" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="8dp" />
+            <corners android:radius="16dp" />
             <solid android:color="#2ecccccc" />
             <stroke android:width="1dp" android:color="#2effffff" />
         </shape>

@@ -35,7 +35,7 @@ public class BrowserActivity extends FragmentActivity {
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
         QbSdk.initTbsSettings(map);
-
+        Log.d("WebView", "onCreate: " + QbSdk.getTbsVersion(this));
         if (!TextUtils.isEmpty(url)) {
             View frameLayout = findViewById(R.id.browser_root);
             getSupportFragmentManager().beginTransaction().replace(R.id.browser_root

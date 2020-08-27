@@ -4,14 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context="com.dhms.tvshow.BrowserFragment">
+    tools:context="com.dhms.tvshow.BrowserFragment"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="@drawable/history_button"
+    android:padding="8dp"
+    android:layout_marginRight="8dp">
 
     <ImageView
         android:padding="16dp"
         android:id="@+id/item_history_fav"
         android:layout_width="@dimen/history_item"
         android:layout_height="@dimen/history_item"
-        android:background="@drawable/history_button"
+        android:background="@drawable/history_fav_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

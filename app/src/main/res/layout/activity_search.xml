@@ -24,7 +24,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_history_list"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/search_search_box"

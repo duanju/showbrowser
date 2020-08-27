@@ -55,6 +55,7 @@ public class SearchActivity extends FragmentActivity {
                     if (query.startsWith("s://")) {
                         // update settings
                         if(BrowserSettings.updateSettings(getApplicationContext(), query.substring(4))) {
+                            mHistoryListView.getAdapter().notifyDataSetChanged();
                             Toast.makeText(getApplicationContext(), "Update WebView settings."
                                     , Toast.LENGTH_SHORT).show();
                         }
@@ -150,7 +151,9 @@ public class SearchActivity extends FragmentActivity {
         @Override
         public int getItemCount() {
             if (null != mHistories) {
-                return mHistories.size();
+                int maxHistoryCount = Integer.parseInt(BrowserSettings.getWebViewSettings(mContext,
+                        BrowserSettings.KEY_OF_HISTORY_COUNT, "1024"));
+                return Math.min(maxHistoryCount ,mHistories.size());
             } else {
                 return 0;
             }

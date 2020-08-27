@@ -3,11 +3,11 @@ package com.dhms.tvshow.db;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 public class BrowserSettings {
     private static final String NAME_OF_WEB_VIEW_SETTING_SHARE_PREFERENCE = "browserSetting";
     public static final String KEY_OF_WEB_VIEW_SCALE = "scale";
+    public static final String KEY_OF_HISTORY_COUNT = "history";
 
     public static String getWebViewSettings(Context context, String key, String defValue) {
         SharedPreferences sharedPreferences = context.getApplicationContext()

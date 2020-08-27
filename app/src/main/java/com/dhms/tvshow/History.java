@@ -20,7 +20,7 @@ import java.util.ListIterator;
 @Entity(tableName = "histories")
 public class History {
     // MAX_HISTORY_NUMBER MUST BE LARGER THEN 1
-    public static final int MAX_HISTORY_NUMBER = 6;
+    public static final int MAX_HISTORY_NUMBER = 10;
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String url;

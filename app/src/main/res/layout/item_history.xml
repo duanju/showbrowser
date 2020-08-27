@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.dhms.tvshow.BrowserFragment">
+
+    <ImageView
+        android:id="@+id/item_history_fav"
+        android:layout_width="@dimen/history_item"
+        android:layout_height="@dimen/history_item"
+        android:background="@drawable/history_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/history_button" />
+
+    <TextView
+        android:id="@+id/item_history_title"
+        android:layout_width="@dimen/history_item"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:lines="2"
+        android:maxLines="2"
+        android:textSize="12sp"
+        android:textColor="@color/lb_tv_white"
+        app:layout_constraintEnd_toEndOf="@id/item_history_fav"
+        app:layout_constraintStart_toStartOf="@id/item_history_fav"
+        app:layout_constraintTop_toBottomOf="@id/item_history_fav"
+        tools:text="baidu yi xia" />
+</androidx.constraintlayout.widget.ConstraintLayout>

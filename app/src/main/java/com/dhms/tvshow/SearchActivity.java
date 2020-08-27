@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,7 +16,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -92,7 +94,7 @@ public class SearchActivity extends FragmentActivity {
         context.startActivity(startBrowser);
     }
 
-    private class HistoryListAdapter extends RecyclerView.Adapter {
+    private static class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.HistoryViewHolder> {
         private Context mContext;
         private List<History> mHistories;
         RecyclerView.LayoutParams mLayoutParams;
@@ -109,23 +111,24 @@ public class SearchActivity extends FragmentActivity {
 
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            Button button = new Button(mContext);
-            button.setLayoutParams(mLayoutParams);
-            button.setBackground(mContext.getDrawable(R.drawable.history_button));
-
-            return new HistoryViewHolder(button);
+        public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new HistoryViewHolder(((Activity) mContext).getLayoutInflater()
+                    .inflate(R.layout.item_history, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            final String url = mHistories.get(position).getUrl();
-            String authority = Uri.parse(url).getAuthority();
-            ((Button) holder.itemView).setText(authority);
+        public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
+            final History history = mHistories.get(position);
+            try {
+                holder.mFavImage.setImageBitmap(history.getFavBitmap());
+            } catch (Exception ex) {
+                // ignore
+            }
+            holder.mTitleView.setText(history.getDiscritption());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startBrowserPage(mContext, url);
+                    startBrowserPage(mContext, history.getUrl());
                 }
             });
         }
@@ -140,8 +143,12 @@ public class SearchActivity extends FragmentActivity {
         }
 
         class HistoryViewHolder extends RecyclerView.ViewHolder {
+            public ImageView mFavImage;
+            public TextView mTitleView;
             public HistoryViewHolder(@NonNull View itemView) {
                 super(itemView);
+                this.mFavImage = itemView.findViewById(R.id.item_history_fav);
+                this.mTitleView = itemView.findViewById(R.id.item_history_title);
             }
         }
     }

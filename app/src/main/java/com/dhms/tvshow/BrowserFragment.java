@@ -3,12 +3,14 @@ package com.dhms.tvshow;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -68,8 +71,39 @@ public class BrowserFragment extends Fragment {
                 updateHistoryUrl(false);
                 return false; //Allow WebView to load url
             }
-        });
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+        });
+        mWebView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+
+                Log.d("LastAccessUrl", "onReceivedTitle: " + title);
+                mHistory.setTitle(mWebView.getTitle());
+                updateHistoryUrl(false);
+            }
+
+            @Override
+            public void onReceivedIcon(WebView view, Bitmap icon) {
+                mHistory.setFavIconData(compress(icon));
+                updateHistoryUrl(false);
+
+                Log.d("LastAccessUrl", "onReceivedIcon: ");
+
+                super.onReceivedIcon(view, icon);
+            }
+
+            private byte[] compress(Bitmap bmp) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                return byteArray;
+            }
+        });
         mWebView.loadUrl(sUrl);
 
         return rootView;
@@ -78,6 +112,7 @@ public class BrowserFragment extends Fragment {
     private void updateHistoryUrl(boolean add) {
         if (null != getActivity()) {
             Log.d("LastAccessUrl", "updateHistoryUrl: " + mHistory.getUrl());
+            Log.d("LastAccessUrl", "updateHistory Title: " + mHistory.getTitle());
             if (add) {
                 History.saveSync(getActivity(), mHistory);
             } else {

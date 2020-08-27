@@ -15,9 +15,9 @@ public interface HistoryDao {
     @Query("SELECT * FROM histories")
     List<History> loadAll();
     @Insert
-    void insert(History history);
+    long insert(History history);
     @Update
-    void update(History history);
+    void update(History... history);
     @Delete
     void delete(History history);
 }

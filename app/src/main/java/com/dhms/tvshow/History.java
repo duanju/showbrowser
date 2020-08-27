@@ -1,6 +1,9 @@
 package com.dhms.tvshow;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -11,7 +14,6 @@ import androidx.room.PrimaryKey;
 import com.dhms.tvshow.db.HistoryDao;
 import com.dhms.tvshow.db.ShareBrowserDatabase;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "histories")
@@ -19,18 +21,22 @@ public class History {
     // MAX_HISTORY_NUMBER MUST BE LARGER THEN 1
     public static final int MAX_HISTORY_NUMBER = 5;
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String url;
+    private String auth;
+    private String title;
+    private byte[] favIconData;
 
     public History(String url) {
         this.url = url;
+        this.auth = Uri.parse(url).getAuthority();
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -40,6 +46,49 @@ public class History {
 
     public void setUrl(String url) {
         this.url = url;
+        this.auth = Uri.parse(url).getAuthority();
+    }
+
+    public String getAuth() {
+        return this.auth;
+    }
+
+    public void setAuth(String auth) {
+        this.auth = auth;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public byte[] getFavIconData() {
+        return this.favIconData;
+    }
+
+    public Bitmap getFavBitmap() {
+        Bitmap bitmap = BitmapFactory.decodeByteArray(this.favIconData, 0, this.favIconData.length);
+        return bitmap;
+    }
+
+    public void setFavIconData(byte[] favIconData) {
+        this.favIconData = favIconData;
+    }
+
+    public String getDiscritption() {
+        String desc = title;
+        if (TextUtils.isEmpty(desc)) {
+            desc = auth;
+        }
+
+        if (TextUtils.isEmpty(desc)) {
+            desc = url;
+        }
+
+        return desc;
     }
 
     public static void getAllSync(final Context context, final Handler handler, final int what) {
@@ -92,6 +141,8 @@ public class History {
                     for (History h : all) {
                         if (h.url.equals(history.url)) {
                             dao.delete(h);
+                            history.setTitle(h.getTitle());
+                            history.setFavIconData(h.getFavIconData());
                         }
                     }
 
@@ -102,7 +153,7 @@ public class History {
                     }
                 }
 
-                dao.insert(history);
+                history.setId(dao.insert(history));
             }
         });
 

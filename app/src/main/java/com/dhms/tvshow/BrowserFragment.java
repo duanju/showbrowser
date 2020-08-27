@@ -1,8 +1,6 @@
 package com.dhms.tvshow;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,10 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,15 +15,14 @@ import androidx.fragment.app.Fragment;
 
 import com.dhms.tvshow.db.BrowserSettings;
 
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
 import java.io.ByteArrayOutputStream;
-import java.util.HashSet;
 import java.util.Objects;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class BrowserFragment extends Fragment {
-
-    private static final String KEY_OF_LAST_ACCESS_URL = "Last_Access_Url";
     private static String sUrl;
 
     static BrowserFragment newInstance(String url) {
@@ -52,7 +45,6 @@ public class BrowserFragment extends Fragment {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setLoadWithOverviewMode(false);
         mWebView.getSettings().setUseWideViewPort(false);
-        mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setBlockNetworkImage(false);
 
@@ -62,9 +54,9 @@ public class BrowserFragment extends Fragment {
                 .getMetrics(displaymetrics);
         int nScreenHeight = displaymetrics.heightPixels;
         String scale = BrowserSettings.getWebViewSettings(
-                getContext(), BrowserSettings.KEY_OF_WEB_VIEW_SCALE, "50");
+                Objects.requireNonNull(getContext()), BrowserSettings.KEY_OF_WEB_VIEW_SCALE, "50");
         Log.d("WebviewSettings", "scale: " + scale);
-        webScale = (int) Math.round((nScreenHeight / 540.0) * Integer.valueOf(scale));
+        webScale = (int) Math.round((nScreenHeight / 540.0) * Integer.parseInt(scale));
         mWebView.setVisibility(View.INVISIBLE);
         mWebView.setInitialScale(webScale);
         mWebView.setVisibility(View.VISIBLE);

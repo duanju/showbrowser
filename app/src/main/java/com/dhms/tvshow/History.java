@@ -15,11 +15,12 @@ import com.dhms.tvshow.db.HistoryDao;
 import com.dhms.tvshow.db.ShareBrowserDatabase;
 
 import java.util.List;
+import java.util.ListIterator;
 
 @Entity(tableName = "histories")
 public class History {
     // MAX_HISTORY_NUMBER MUST BE LARGER THEN 1
-    public static final int MAX_HISTORY_NUMBER = 5;
+    public static final int MAX_HISTORY_NUMBER = 6;
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String url;
@@ -136,16 +137,19 @@ public class History {
                 ShareBrowserDatabase database = ShareBrowserDatabase.createDB(context);
                 HistoryDao dao = database.userDao();
                 List<History> all = dao.loadAll();
+
                 if (all != null) {
                     // remove the duplicated history from db
-                    for (History h : all) {
+                    ListIterator<History> iterator = all.listIterator();
+                    while (iterator.hasNext()) {
+                        History h = iterator.next();
                         if (h.url.equals(history.url)) {
                             dao.delete(h);
                             history.setTitle(h.getTitle());
                             history.setFavIconData(h.getFavIconData());
+                            iterator.remove();
                         }
                     }
-
                     // remove the first earliest history if the total history count is larger than the
                     // max value
                     if (all.size() >= MAX_HISTORY_NUMBER) {

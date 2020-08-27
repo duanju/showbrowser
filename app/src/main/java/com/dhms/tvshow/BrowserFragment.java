@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.dhms.tvshow.db.BrowserSettings;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Objects;
@@ -59,7 +61,10 @@ public class BrowserFragment extends Fragment {
         Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay()
                 .getMetrics(displaymetrics);
         int nScreenHeight = displaymetrics.heightPixels;
-        webScale = (int) Math.round((nScreenHeight / 540.0) * 50.0);
+        String scale = BrowserSettings.getWebViewSettings(
+                getContext(), BrowserSettings.KEY_OF_WEB_VIEW_SCALE, "50");
+        Log.d("WebviewSettings", "scale: " + scale);
+        webScale = (int) Math.round((nScreenHeight / 540.0) * Integer.valueOf(scale));
         mWebView.setVisibility(View.INVISIBLE);
         mWebView.setInitialScale(webScale);
         mWebView.setVisibility(View.VISIBLE);

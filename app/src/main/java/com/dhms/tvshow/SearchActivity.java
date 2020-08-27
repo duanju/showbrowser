@@ -21,6 +21,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dhms.tvshow.db.BrowserSettings;
+
 import java.util.List;
 
 
@@ -47,9 +49,21 @@ public class SearchActivity extends FragmentActivity {
         mGoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(mSearchView.getQuery())) {
-                    String url = History.getValidateUrl(mSearchView.getQuery().toString());
-                    startBrowserPage(SearchActivity.this, url);
+                CharSequence queryCharSeq = mSearchView.getQuery();
+                if (!TextUtils.isEmpty(queryCharSeq)) {
+                    String query = queryCharSeq.toString();
+                    if (query.startsWith("s://")) {
+                        // update settings
+                        if(BrowserSettings.updateSettings(getApplicationContext(), query.substring(4))) {
+                            Toast.makeText(getApplicationContext(), "Update WebView settings."
+                                    , Toast.LENGTH_SHORT).show();
+                        }
+
+                        mSearchView.setQuery("", false);
+                    } else {
+                        String url = History.getValidateUrl(mSearchView.getQuery().toString());
+                        startBrowserPage(SearchActivity.this, url);
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please input url.", Toast.LENGTH_SHORT).show();
                 }
@@ -145,6 +159,7 @@ public class SearchActivity extends FragmentActivity {
         class HistoryViewHolder extends RecyclerView.ViewHolder {
             public ImageView mFavImage;
             public TextView mTitleView;
+
             public HistoryViewHolder(@NonNull View itemView) {
                 super(itemView);
                 this.mFavImage = itemView.findViewById(R.id.item_history_fav);

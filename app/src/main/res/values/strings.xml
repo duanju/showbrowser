@@ -4,4 +4,8 @@
     <string name="title_activity_browser">browser</string>
     <string name="title_activity_search">search</string>
     <string name="search_hit" >请输入您要打开的网址</string>
+    <string name="welcome">Welcome</string>
+    <string name="loading_x5_webview">正在加载X5 WebView 请等待</string>
+    <string name="fail_load_x5_web_view">抱歉，没能加载到x5 webview，请关闭再打开程序试试。</string>
+    <string name="success_load_x5_web_view">"准备完毕. x5 version: %d</string>
 </resources>

@@ -21,22 +21,25 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+
+import com.tencent.smtt.sdk.QbSdk;
 
 /*
  * Main Activity class that loads {@link MainFragment}.
  */
 public class MainActivity extends FragmentActivity {
     private final static int MESSAGE_LASTER_HISTORY = 100;
-
+    private static boolean sInited = false;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Handler handler = new Handler(getMainLooper()) {
+    protected void onStart() {
+        super.onStart();
+        final Handler handler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 if (msg.what == MESSAGE_LASTER_HISTORY) {
@@ -54,10 +57,42 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     super.handleMessage(msg);
                 }
-
             }
         };
 
-        History.getLastSync(this, handler, MESSAGE_LASTER_HISTORY);
+        final TextView messageView = (TextView) findViewById(R.id.main_loading_x5);
+        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+            @Override
+            public void onViewInitFinished(boolean arg0) {
+                // TODO Auto-generated method stub
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                if (arg0) {
+                    sInited = true;
+                    messageView.setText(getString(R.string.success_load_x5_web_view
+                            , QbSdk.getTbsVersion(getApplicationContext())));
+                    History.getLastSync(getApplicationContext(), handler, MESSAGE_LASTER_HISTORY);
+                } else {
+                    messageView.setText(getString(R.string.fail_load_x5_web_view));
+                }
+            }
+
+            @Override
+            public void onCoreInitFinished() {
+                // TODO Auto-generated method stub
+            }
+        };
+
+        if (sInited) {
+            History.getLastSync(getApplicationContext(), handler, MESSAGE_LASTER_HISTORY);
+        } else {
+            QbSdk.initX5Environment(getApplicationContext(), cb);
+            messageView.setText(getText(R.string.loading_x5_webview));
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
     }
 }

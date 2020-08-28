@@ -41,7 +41,7 @@ public class BrowserFragment extends Fragment {
         updateHistoryUrl(true);
         View rootView = inflater.inflate(R.layout.browser_fragment, container, false);
 
-        mWebView = rootView.findViewById(R.id.web_view);
+        mWebView = (WebView) rootView.findViewById(R.id.web_view);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setLoadWithOverviewMode(false);
         mWebView.getSettings().setUseWideViewPort(false);
@@ -74,7 +74,7 @@ public class BrowserFragment extends Fragment {
                 super.onPageFinished(view, url);
             }
         });
-        mWebView.setWebChromeClient(new WebChromeClient(){
+        mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
@@ -116,5 +116,12 @@ public class BrowserFragment extends Fragment {
                 History.updateSync(getActivity(), mHistory);
             }
         }
+    }
+
+    @Override
+    public void onStop() {
+        mWebView.stopLoading();
+        mWebView.destroy();
+        super.onStop();
     }
 }

@@ -1,5 +1,4 @@
 <resources>
     <color name="showSearchHit">#ffcccccc</color>
     <color name="historyItemHightLight">#21ffffff</color>
-    <color name="historyItemFavBoarder">@color/historyItemHightLight</color>
 </resources>

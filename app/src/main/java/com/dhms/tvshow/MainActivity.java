@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
  * Main Activity class that loads {@link MainFragment}.
  */
 public class MainActivity extends FragmentActivity {
-    private final static String BAIDU = "https://console.bce.baidu.com/bcd/#/bcd/manage/detail~domain=duanju91.top&resourceId=5a512559-124d-49f6-9aa3-2415adbd7677";
     private final static int MESSAGE_LASTER_HISTORY = 100;
 
     @Override

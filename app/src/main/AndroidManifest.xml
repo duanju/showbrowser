@@ -23,6 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:name=".ShowApplication"
         tools:targetApi="m">
         <activity
             android:name=".SearchActivity"

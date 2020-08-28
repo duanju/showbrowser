@@ -118,7 +118,7 @@ public class History {
                 Message message = handler.obtainMessage();
                 message.what = what;
                 if (null != all && all.size() > 0) {
-                    message.obj = all.get(all.size() - 1);
+                    message.obj = all.get(0);
                 } else {
                     message.obj = null;
                 }
